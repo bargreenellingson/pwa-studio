@@ -10,6 +10,29 @@
     grid-template-rows: min-content minmax(54px, 1fr) min-content;
 }
 
+.root_masked {
+    composes: root;
+    
+}
+
+.mask {
+    display: block;
+    background-color: black;
+    position: fixed;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.mask_active {
+    composes: mask;
+    opacity: 0.5;
+    visibility: visible;
+}
+
 .image {
     background-color: rgb(var(--venia-grey));
     background-position: 50% 50%;
@@ -65,3 +88,4 @@
     align-items: center;
     display: inline-flex;
 }
+

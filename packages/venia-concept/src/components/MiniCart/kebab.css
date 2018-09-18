@@ -1,22 +1,30 @@
 .subMenu {
     position: relative;
     display: inline-block;
-    grid-column: 4 / span 1;
+
+    grid-row-start: 1;
+    grid-row-end: 4;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    align-self: center;
 }
 
 .subMenu ul {
     position: absolute;
-    right: 20px;
+    right: 1em;
     box-shadow: 2px 2px 5px #777;
 }
 
 .dropdown {
+    display: grid;
     position: absolute;
     right: 0;
-    top: -21px;
+    top: -3em;
     transition: all 0.25s ease-out;
     transform: scale(0);
     transform-origin: 100% 50%;
+    align-items: center;
+
 }
 
 .dropdown.ul:hover {
@@ -33,14 +41,22 @@
   background-color: #EEE;
 }
 
-.dropdown li a, li button{
+.dropdown li > a, li > button{
     width: 100%;
     padding: 8px;
-    display: inline-block;
+    display: grid;
+    grid-template-columns: 1fr 10fr;
     white-space: pre;
     box-sizing: border-box;
     text-align: left;
+    align-items: center;
+    justify-items: start;
+    column-gap: 10px;
   }
+
+.dropdown li {
+    border-bottom: 1px solid rgb(var(--venia-border));
+}
 
 .active {
   position: absolute;

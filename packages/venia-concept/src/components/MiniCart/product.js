@@ -1,4 +1,5 @@
 import { Component, Fragment, createElement } from 'react';
+import { compose } from 'redux';
 import { number, shape, string } from 'prop-types';
 import { Price } from '@magento/peregrine';
 import Kebab from './kebab';
@@ -60,12 +61,18 @@ class Product extends Component {
         };
     }
 
+
+
     render() {
         const { options, props } = this;
         const { classes, item, currencyCode, removeItemFromCart } = props;
+        const isMasked = isOpen => isOpen ? classes.root_masked : classes.root; 
 
         return (
             <li className={classes.root}>
+                <div
+                    className={classes.mask_active}
+                />
                 <div
                     className={classes.image}
                     style={this.styleImage(item.image)}
@@ -86,6 +93,7 @@ class Product extends Component {
                     </span>
                 </div>
                 <Kebab
+                    toggleKebab={isMasked}
                     removeItemFromCart={removeItemFromCart}
                     item={item}
                 />
