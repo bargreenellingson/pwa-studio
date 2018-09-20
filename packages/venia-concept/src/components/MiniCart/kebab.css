@@ -1,4 +1,4 @@
-.subMenu {
+.root {
     position: relative;
     display: inline-block;
 
@@ -9,7 +9,7 @@
     align-self: center;
 }
 
-.subMenu ul {
+.root ul {
     position: absolute;
     right: 1em;
     box-shadow: 2px 2px 5px #777;
