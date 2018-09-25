@@ -2,7 +2,7 @@
     align-items: center;
     display: none;
     opacity: 0;
-    visibility: collapse; 
+    visibility: hidden; 
     flex: none;
     justify-content: center;
     order: 1; 
