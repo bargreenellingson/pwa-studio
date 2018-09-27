@@ -6,7 +6,7 @@ import classify from 'src/classify';
 import Icon from 'src/components/Icon';
 import CartTrigger from './cartTrigger';
 import NavTrigger from './navTrigger';
-import Search from 'src/components/Search';
+import SearchInput from 'src/components/SearchInput';
 import defaultClasses from './header.css';
 import logo from './logo.svg';
 
@@ -27,27 +27,31 @@ class Header extends Component {
 
     constructor(props) {
       super(props);
-      this.state = {isOpen: false};
+      this.state = {
+        isOpen: false,
+        rootClass: this.props.classes.closed};
     }
     
     render() {
-        const { classes } = this.props;
+        const { classes } = this.props; 
 
         const toggleSearch = () => {
           if (this.state.isOpen === true) {
             this.setState({
-              isOpen : false
+              isOpen : false,
+              rootClass: classes.closed
             });
           }
           else {
             this.setState({
-              isOpen : true
+              isOpen : true,
+              rootClass: classes.open
             });
           }
         };       
 
         return (
-            <header className={classes.root}>
+            <header className={this.state.rootClass}>
                 <div className={classes.toolbar}>
                     <Link to="/">
                         <img
@@ -75,7 +79,7 @@ class Header extends Component {
                         </CartTrigger>
                     </div>
                 </div>
-                <Search
+                <SearchInput
                   isOpen={this.state.isOpen}
                   classes={classes}
                 />
