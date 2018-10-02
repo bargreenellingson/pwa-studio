@@ -1,5 +1,4 @@
-import { Component, Fragment, createElement } from 'react';
-import { compose } from 'redux';
+import React, { Component, Fragment } from 'react';
 import { number, shape, string } from 'prop-types';
 import { Price } from '@magento/peregrine';
 import Kebab from './kebab';
@@ -72,7 +71,7 @@ class Product extends Component {
 
     render() {
         const { options, props } = this;
-        const { classes, item, currencyCode, removeItemFromCart } = props;
+        const { classes, item, currencyCode, removeItem } = props;
         const rootClasses = this.state.isOpen ? classes.root + ' ' + classes.root_masked : classes.root;
         const isMasked = isOpen => isOpen ? classes.root_masked : classes.root;
 
@@ -107,7 +106,7 @@ class Product extends Component {
                 >
                     <Kebab
                         isOpen={this.state.isOpen}
-                        removeItemFromCart={removeItemFromCart}
+                        removeItem={removeItem}
                         item={item}
                     />
                 </div>

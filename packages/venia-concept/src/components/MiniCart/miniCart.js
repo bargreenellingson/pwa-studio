@@ -1,23 +1,22 @@
-import { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { shape, string, func } from 'prop-types';
 import { Price } from '@magento/peregrine';
 
 import { store } from 'src';
-import { getCartDetails, removeItemFromCart } from 'src/actions/cart';
+import { getCartDetails, removeItem } from 'src/actions/cart';
 import classify from 'src/classify';
 import Icon from 'src/components/Icon';
 import ProductList from './productList';
 import Trigger from './trigger';
 import defaultClasses from './miniCart.css';
 
-let Checkout;
+let Checkout = () => null;
 
 class MiniCart extends Component {
     static propTypes = {
         classes: shape({
-            checkout: string,
             body: string,
             header: string,
             footer: string,
@@ -29,41 +28,30 @@ class MiniCart extends Component {
             title: string,
             totals: string
         }),
-        removeItemFromCart: func.isRequired
+        removeItem: func.isRequired
     };
 
-    constructor(...args) {
-        super(...args);
-    }
+    async componentDidMount() { 
+        const { getCartDetails } = this.props;
+        const reducers = await Promise.all([
+            import('src/reducers/cart'),
+            import('src/reducers/checkout')
+        ]);
 
-    async componentDidMount() {
-        const [
-            CheckoutComponent,
-            checkoutReducer,
-            makeCartReducer
-        ] = (await Promise.all([
-            import('src/components/Checkout'),
-            import('src/reducers/checkout'),
-            import('src/reducers/cart')
-        ])).map(mod => mod.default);
-
-        Checkout = CheckoutComponent;
-        store.addReducer('checkout', checkoutReducer);
-        store.addReducer('cart', await makeCartReducer());
-        this.props.getCartDetails({
-            guestCartId: store.getState().cart.guestCartId
+        reducers.forEach(mod => {
+            addReducer(mod.name, mod.default);
         });
-    }
+        await getCartDetails();
 
-    get checkout() {
-        return Checkout ? <Checkout /> : null;
+        const CheckoutModule = await import('src/components/Checkout');
+        Checkout = CheckoutModule.default;
     }
 
     get productList() {
-        const { cartId, cartCurrencyCode, cart, removeItemFromCart } = this.props;
+        const { cartId, cartCurrencyCode, cart, removeItem } = this.props;
         return cartId ? (
             <ProductList
-                removeItemFromCart={removeItemFromCart}
+                removeItem={removeItem}
                 currencyCode={cartCurrencyCode}
                 items={cart.details.items}
             />
@@ -95,9 +83,10 @@ class MiniCart extends Component {
             return <div>Fetching Data</div>;
         }
 
-        const { checkout, productList, totalsSummary, props } = this;
-        const { classes, isOpen } = props;
+        const { productList, totalsSummary, props } = this;
+        const { cart, classes, isOpen } = props;
         const className = isOpen ? classes.root_open : classes.root;
+        debugger;
 
         return (
             <aside className={className}>
@@ -113,28 +102,31 @@ class MiniCart extends Component {
                 <div className={classes.footer}>
                     <div className={classes.summary}>{totalsSummary}</div>
                 </div>
-                {checkout}
+                <Checkout cart={cart} />
             </aside>
         );
     }
 }
 
+const mapStateToProps = ({ cart }) => {
+    const details = cart && cart.details;
+    const cartId = details && details.id;
+    const cartCurrencyCode =
+        details && details.currency && details.currency.quote_currency_code;
+
+    return {
+        cart,
+        cartId,
+        cartCurrencyCode
+    };
+};
+
+const mapDispatchToProps = { getCartDetails };
+
 export default compose(
     classify(defaultClasses),
     connect(
-        ({ cart }) => {
-            const details = cart && cart.details;
-            const cartId = details && details.id;
-            const cartCurrencyCode =
-                details &&
-                details.currency &&
-                details.currency.quote_currency_code;
-            return {
-                cart,
-                cartId,
-                cartCurrencyCode
-            };
-        },
-        { getCartDetails, removeItemFromCart }
+        mapStateToProps,
+        mapDispatchToProps
     )
 )(MiniCart);

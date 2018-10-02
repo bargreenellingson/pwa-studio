@@ -58,7 +58,7 @@ class Kebab extends Component {
     }
 
     removeItem = (item) => {
-        this.props.removeItemFromCart(item);
+        this.props.removeItem(item);
     }
 }
 

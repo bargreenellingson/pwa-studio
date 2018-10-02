@@ -1,4 +1,4 @@
-import { Component, createElement } from 'react';
+import React, { Component } from 'react';
 import { arrayOf, number, shape, string, func } from 'prop-types';
 import { List } from '@magento/peregrine';
 
@@ -23,11 +23,11 @@ class ProductList extends Component {
             })
         ).isRequired,
         currencyCode: string.isRequired,
-        removeItemFromCart: func
+        removeItem: func
     };
 
     render() {
-        const { currencyCode, removeItemFromCart, ...otherProps } = this.props;
+        const { currencyCode, removeItem, ...otherProps } = this.props;
         return (
             <List
                 render="ul"
@@ -35,7 +35,7 @@ class ProductList extends Component {
                 renderItem={props => (
                     <Product
                         currencyCode={currencyCode}
-                        removeItemFromCart={removeItemFromCart}
+                        removeItem={removeItem}
                         {...props}
                     />
                 )}
