@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { string, shape } from 'prop-types';
 import resolveUnknownRoute from './resolveUnknownRoute';
 import fetchRootComponent from './fetchRootComponent';
+import Loader from 'src/components/Loader';
+import NotFound from 'src/components/NotFound';
 
 export default class MagentoRouteHandler extends Component {
     static propTypes = {
@@ -12,7 +14,9 @@ export default class MagentoRouteHandler extends Component {
         }).isRequired
     };
 
-    state = {};
+    state = {
+        routeFound: true
+    };
 
     componentDidMount() {
         this.getRouteComponent(this.props.location.pathname);
@@ -40,7 +44,14 @@ export default class MagentoRouteHandler extends Component {
                 if (!matched) {
                     // TODO: User-defined 404 page
                     // when the API work is done to support it
+                    this.setState({
+                        routeFound: false
+                    });
                     throw new Error('404');
+                } else {
+                    this.setState({
+                        routeFound: true
+                    });
                 }
                 return fetchRootComponent(rootChunkID, rootModuleID).then(
                     Component => {
@@ -62,9 +73,11 @@ export default class MagentoRouteHandler extends Component {
         const { location } = this.props;
         const routeInfo = this.state[location.pathname];
 
-        if (!routeInfo) {
+        if (this.state.routeFound === false) {
+            return <NotFound />;
+        } else if (!routeInfo) {
             // TODO (future iteration): User-defined loading content
-            return <div>Loading</div>;
+            return <Loader />;
         }
 
         const { Component, ...routeProps } = routeInfo;
