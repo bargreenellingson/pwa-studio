@@ -39,9 +39,7 @@ class NotFound extends Component {
                         Sorry! We could not find the page you requested.
                     </div>
                     <a href="/">
-                        <Button>
-                            Continue Shopping
-                        </Button>
+                        <Button>Continue Shopping</Button>
                     </a>
                 </div>
                 <div className="NotFound-content-actions" />

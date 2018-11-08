@@ -4,7 +4,6 @@ import defaultClasses from './errorView.css';
 import Loader from 'src/components/Loader';
 import NotFound from 'src/components/NotFound';
 
-
 const messages = new Map()
     .set('loading', <Loader />)
     .set('notFound', <NotFound />)
@@ -19,7 +18,7 @@ class ErrorView extends Component {
                 ? messages.get('notFound')
                 : messages.get('internalError');
 
-      return <article className={classes.root}> {message} </article>;
+        return <article className={classes.root}> {message} </article>;
     }
 }
 

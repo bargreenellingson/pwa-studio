@@ -65,7 +65,12 @@ class Product extends Component {
             >
                 {({ loading, error, data }) => {
                     if (error) return <div>Data Fetch Error</div>;
-                    if (loading) return <Loader text={'Retrieving Product Information...'} />;
+                    if (loading)
+                        return (
+                            <Loader
+                                text={'Retrieving Product Information...'}
+                            />
+                        );
 
                     const product = data.productDetail.items[0];
 
