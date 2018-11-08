@@ -1,27 +1,11 @@
 import React, { Component } from 'react';
 import { string, number, shape } from 'prop-types';
-import { Link } from 'react-router-dom';
 import { Query } from 'react-apollo';
-import gql from 'graphql-tag';
 import classify from 'src/classify';
 import defaultClasses from './categoryList.css';
-
-// TODO: get only active categories from graphql when it is ready
-const categoryListQuery = gql`
-    query category($id: Int!) {
-        category(id: $id) {
-            children {
-                name
-                url_key
-                url_path
-                image
-            }
-        }
-    }
-`;
-
-// TODO: get categoryUrlSuffix from graphql when it is ready
-const categoryUrlSuffix = '.html';
+import CategoryTile from './categoryTile';
+import categoryListQuery from '../../queries/getCategoryList.graphql';
+import Loader from 'src/components/Loader';
 
 class CategoryList extends Component {
     static propTypes = {
@@ -30,12 +14,7 @@ class CategoryList extends Component {
         classes: shape({
             root: string,
             header: string,
-            content: string,
-            title: string,
-            item: string,
-            imageWrapper: string,
-            image: string,
-            name: string
+            content: string
         })
     };
 
@@ -60,35 +39,17 @@ class CategoryList extends Component {
                 <Query query={categoryListQuery} variables={{ id }}>
                     {({ loading, error, data }) => {
                         if (error) return <div>Data Fetch Error</div>;
-                        if (loading) return <div>Fetching Data</div>;
+                        if (loading) return <Loader text={'Fetching Data...'} />;
                         if (data.category.children == '')
                             return <div>Here are not any child categories</div>;
 
                         return (
                             <div className={classes.content}>
-                                {data.category.children.map((item, index) => (
-                                    <Link
-                                        className={classes.item}
-                                        to={`/${
-                                            item.url_key
-                                        }${categoryUrlSuffix}`}
-                                        key={index}
-                                    >
-                                        <span className={classes.imageWrapper}>
-                                            {item.image && (
-                                                <img
-                                                    className={classes.image}
-                                                    src={`/pub/media/catalog/category/${
-                                                        item.image
-                                                    }`}
-                                                    alt={item.name}
-                                                />
-                                            )}
-                                        </span>
-                                        <span className={classes.name}>
-                                            {item.name}
-                                        </span>
-                                    </Link>
+                                {data.category.children.map(item => (
+                                    <CategoryTile
+                                        item={item}
+                                        key={item.url_key}
+                                    />
                                 ))}
                             </div>
                         );

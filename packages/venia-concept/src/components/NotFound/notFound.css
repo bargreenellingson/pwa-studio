@@ -16,6 +16,7 @@
     margin: 1rem 0;
 }
 
-.actions {
-    color: rgb(var(--venia-teal));
+.text {
+    padding-bottom: 1rem;
+    line-height: 1.5rem;
 }

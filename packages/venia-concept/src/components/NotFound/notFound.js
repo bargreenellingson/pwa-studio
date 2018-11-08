@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from 'src/components/Header/logo.svg';
 import defaultClasses from './notFound.css';
 import classify from 'src/classify';
+import Button from 'src/components/Button';
 import { string, shape } from 'prop-types';
 
 class NotFound extends Component {
@@ -34,17 +35,14 @@ class NotFound extends Component {
                     <div>Page Not Found</div>
                 </h1>
                 <div className={classes.message}>
-                    <p>
-                        <span>
-                            Sorry, we could not find the page you were trying to
-                            get to. Try
-                        </span>
-                        <a href="/" className={classes.actions}>
-                            {' '}
-                            going to the home page{' '}
-                        </a>
-                        <span> to get back on track.</span>
-                    </p>
+                    <div className={classes.text}>
+                        Sorry! We could not find the page you requested.
+                    </div>
+                    <a href="/">
+                        <Button>
+                            Continue Shopping
+                        </Button>
+                    </a>
                 </div>
                 <div className="NotFound-content-actions" />
             </div>
