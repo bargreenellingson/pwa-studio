@@ -38,10 +38,11 @@ const reducerMap = {
             submitting: false
         };
     },
-    [actions.input.reject]: state => {
+    [actions.input.reject]: (state, { payload}) => {
         return {
             ...state,
-            submitting: false
+            submitting: false,
+            errorMessage: payload.message
         };
     },
     [actions.order.submit]: state => {

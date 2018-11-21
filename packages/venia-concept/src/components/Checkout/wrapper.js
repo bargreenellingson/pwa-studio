@@ -9,6 +9,9 @@ import {
     submitInput,
     submitOrder
 } from 'src/actions/checkout';
+
+import { getCountries } from 'src/actions/directory';
+
 import Flow from './flow';
 
 class Wrapper extends Component {
@@ -30,6 +33,10 @@ class Wrapper extends Component {
         submitOrder: func.isRequired
     };
 
+    componentDidMount() {
+        this.props.getCountries();
+    }
+
     render() {
         const {
             cart,
@@ -38,7 +45,8 @@ class Wrapper extends Component {
             editOrder,
             resetCheckout,
             submitInput,
-            submitOrder
+            submitOrder,
+            directory
         } = this.props;
 
         // ensure state slices are present
@@ -54,7 +62,7 @@ class Wrapper extends Component {
             submitOrder
         };
 
-        const flowProps = { actions, cart, checkout };
+        const flowProps = { actions, cart, checkout, directory };
 
         return <Flow {...flowProps} />;
     }
@@ -65,10 +73,11 @@ const mapDispatchToProps = {
     editOrder,
     resetCheckout,
     submitInput,
-    submitOrder
+    submitOrder,
+    getCountries
 };
 
 export default connect(
-    ({ checkout }) => ({ checkout }),
+    ({ checkout, directory }) => ({ checkout, directory }),
     mapDispatchToProps
 )(Wrapper);

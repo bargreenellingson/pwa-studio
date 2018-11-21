@@ -50,6 +50,12 @@
     grid-column-end: span 1;
 }
 
+.info {
+    grid-column-end: span 2;
+    min-height: 1em;
+    color: rgb(var(--venia-text-spot));
+}
+
 .email,
 .street0 {
     grid-column-end: span 2;

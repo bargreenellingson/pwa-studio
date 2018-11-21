@@ -41,7 +41,7 @@ class Flow extends Component {
     };
 
     get child() {
-        const { actions, cart, checkout } = this.props;
+        const { actions, cart, checkout, directory } = this.props;
         const { beginCheckout, editOrder, submitInput, submitOrder } = actions;
         const { editing, step, submitting } = checkout;
         const { details } = cart;
@@ -62,7 +62,8 @@ class Flow extends Component {
                     submitInput,
                     submitOrder,
                     submitting,
-                    valid
+                    valid,
+                    directory
                 };
 
                 return <Form {...stepProps} />;

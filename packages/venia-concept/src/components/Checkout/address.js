@@ -44,6 +44,27 @@ class AddressForm extends Component {
         submit: func
     };
 
+    validateRegion = ( region_input ) => {
+        const regions = this.props.directory.countries.find((val) => val.id === 'US');
+        const region = regions.available_regions.find((val) => {
+            return val.id.toLowerCase()   === region_input.toLowerCase() ||
+                   val.code.toLowerCase() === region_input.toLowerCase() ||
+                   val.name.toLowerCase() === region_input.toLowerCase()
+        });
+        return !!region ? null : 'region does not exist!';
+    }
+
+    getErrors(errors) {
+        const keys = Object.keys(errors);
+        return (<ul>
+            {keys.map((key) => {
+                return <li key={key}>{  errors[key] } </li>
+            })
+            }
+            </ul>
+        )
+    }
+
     render() {
         const { children, props } = this;
         const { classes, initialValues } = props;
@@ -55,13 +76,16 @@ class AddressForm extends Component {
                 initialValues={values}
                 onSubmit={this.submit}
             >
-                {children}
+                  {({ formState }) => (
+                      children(formState)
+                  )}
             </Form>
         );
     }
 
-    children = () => {
+    children = (formState) => {
         const { classes, submitting } = this.props;
+        const { validateRegion, getErrors } = this;
 
         return (
             <Fragment>
@@ -113,6 +137,7 @@ class AddressForm extends Component {
                             id={classes.region_code}
                             field="region_code"
                             className={classes.textInput}
+                            validate={validateRegion}
                         />
                     </div>
                     <div className={classes.telephone}>
@@ -130,6 +155,9 @@ class AddressForm extends Component {
                             field="email"
                             className={classes.textInput}
                         />
+                    </div>
+                    <div className={classes.info}>
+                        {getErrors(formState.errors)}
                     </div>
                 </div>
                 <div className={classes.footer}>

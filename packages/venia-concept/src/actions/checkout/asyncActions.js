@@ -43,7 +43,8 @@ export const submitInput = payload =>
         try {
             address = formatAddress(address, countries);
         } catch (error) {
-            throw error;
+            dispatch(actions.input.reject(error));
+            return;
         }
 
         try {
@@ -139,10 +140,11 @@ export function formatAddress(address = {}, countries = []) {
         throw new Error('Country "US" does not contain any available regions.');
     }
 
-    const region = regions.find(({ code }) => code === region_code);
+    // TODO: Make sure that it doesn't run `toLowerCase` on non string
+    const region = regions.find(({ code }) => code.toLowerCase() === region_code.toLowerCase());
 
     if (!region) {
-        throw new Error(`Region "${region_code}" is not an available region.`);
+        throw new Error({ region_code: `Region "${region_code}" is not an available region.` });
     }
 
     return {
