@@ -2,7 +2,6 @@ const path = require('path');
 
 const configureBabel = require('../babel.config.js');
 const babelOptions = configureBabel('development');
-console.log(babelOptions);
 
 const base_config = require('./webpack.config.js');
 
@@ -13,21 +12,21 @@ const themePaths = {
     node: path.resolve(__dirname, '../../../')
 };
 
-console.log(themePaths.node);
-
-const testPath = path.resolve('../');
-
-module.exports = (storybookBaseConfig, configType) => {
-    storybookBaseConfig.module.rules.push({
-        include: [themePaths.src],
-        test: /\.js$/,
-        use: [
-            {
-                loader: 'babel-loader',
-                options: { ...babelOptions, cacheDirectory: true }
-            }
-        ]
-    });
+module.exports = function(storybookBaseConfig, configType) {
+    storybookBaseConfig.module.rules.push(
+        {
+            include: [
+                themePaths.src,
+                /peregrine\/src\//,
+            ],
+            test: /\.(mjs|js|graphql)$/,
+            use: [
+                {
+                    loader: 'babel-loader',
+                    options: { ...babelOptions, cacheDirectory: true }
+                }
+            ]
+        } );
 
     storybookBaseConfig.module.rules.push({
         test: /\.css$/,
@@ -37,7 +36,8 @@ module.exports = (storybookBaseConfig, configType) => {
                 loader: 'css-loader',
                 options: {
                     importLoaders: 1,
-                    localIdentName: '[name]-[local]-[hash:base64:3]',
+                    localIdentName:
+                    '[name]-[local]-[hash:base64:3]',
                     modules: true
                 }
             }
