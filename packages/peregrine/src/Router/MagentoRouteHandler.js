@@ -23,23 +23,86 @@ export default class MagentoRouteHandler extends Component {
             hasError: false,
             internalError: false,
             notFound: false
-        }
+        },
+        renderRoot: null,
+        renderChildren: null
     };
 
     componentDidMount() {
         mountedInstances.add(this);
         this.getRouteComponent(this.props.location.pathname);
+        this.loadingPage();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         const { props, state } = this;
         const { pathname } = props.location;
         const isKnown = state.componentMap.has(pathname);
+        const prevIsKnown = prevState.componentMap.has(pathname);
+        const prevPathname = prevProps.location.pathname;
+        const prevErrorState = prevState.errorState;
 
-        if (!isKnown) {
-            this.getRouteComponent(pathname);
+        if (this.props !== prevProps || isKnown !== prevIsKnown || state.errorState !== prevErrorState){
+            if (pathname !== prevPathname) {
+                this.getRouteComponent(pathname);
+                if (!isKnown) {
+                    // If no record of this page in componentMap, then load
+                    this.loadingPage();
+                }
+            } else if (isKnown) {
+                // if Known, have some RootComponent to render
+                this.displayPage(prevIsKnown, pathname, prevPathname, prevErrorState);
+            }
         }
     }
+
+    loadingPage() {
+        let errorState = this.state.errorState;
+        let setChildren = null;
+        let renderRoot = this.state.renderRoot;
+        
+        //render children to display errorPage or loading page
+        if (errorState.hasError) {
+            setChildren = false;
+        } else {
+            setChildren = true;
+        }        
+        
+        if (renderRoot !== null) {
+            this.setState({
+                renderRoot: null
+            });
+        }
+        this.setChildren(setChildren);
+    }
+
+    displayPage(prevIsKnown, pathname, prevPathname, prevErrorState) {
+        const errorState = this.state.errorState;
+        let renderRoot = this.state.renderRoot;
+        let setChildren = null;
+
+        if (errorState.hasError) {
+            renderRoot = null;
+            setChildren = false;
+        } else { 
+            // If just finished loading, loading graphQL query, path updated to a known query, or if leaving error page
+            if (!prevIsKnown || this.props.queryLoading || pathname !== prevPathname || errorState !== prevErrorState ) {
+                const { RootComponent, ...routeProps} = this.state.componentMap.get(pathname);
+                renderRoot = <RootComponent {...routeProps} />;
+                //Continue to render children so loader has a chance to display graphQL loading if needed
+                setChildren = true;
+            } else {
+                //Once any queries have loaded, or if queries don't exist on page, remove children
+                setChildren = null;
+            }
+        }
+        
+        this.setState({
+          renderRoot: renderRoot
+        });
+        this.setChildren(setChildren);
+    }
+
     componentWillUnmount() {
         mountedInstances.delete(this);
     }
@@ -100,36 +163,26 @@ export default class MagentoRouteHandler extends Component {
         }));
     }
 
-    renderChildren(loading) {
+    setChildren(loading) {
         const { props, state } = this;
-        const { children } = props;
+        const { children, loadMessage } = props;
         const { errorState } = state;
 
-        return typeof children === 'function'
-            ? children({ ...errorState, loading })
-            : null;
+        this.setState ({
+            renderChildren: loading === null
+                ? null
+                : typeof children === 'function'
+                    ? children({ ...errorState, loading, loadMessage })
+                    : null
+        });
     }
 
-    render() {
-        const { props, state } = this;
-        const { pathname } = props.location;
-        const { componentMap, errorState } = state;
-
-        // if we have no record of this pathname, we're still loading
-        // and we have no RootComponent, so render children
-        if (!componentMap.has(pathname)) {
-            return this.renderChildren(true);
-        }
-
-        // if we're in an error state, we're not loading anymore
-        // but we have no RootComponent, so render children
-        if (errorState.hasError) {
-            return this.renderChildren(false);
-        }
-
-        // otherwise we do have a RootComponent, so render it
-        const { RootComponent, ...routeProps } = componentMap.get(pathname);
-
-        return <RootComponent {...routeProps} />;
+    render() {        
+        return (
+            <span>
+                { this.state.renderChildren }
+                { this.state.renderRoot }
+            </span>
+        );
     }
 }

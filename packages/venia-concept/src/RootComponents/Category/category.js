@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import classify from 'src/classify';
 import Gallery from 'src/components/Gallery';
 import defaultClasses from './category.css';
-import Loader from 'src/components/Loader';
+import LoaderAction from 'src/components/LoaderAction';
 
 const categoryQuery = gql`
     query category($id: Int!) {
@@ -57,10 +57,14 @@ class Category extends Component {
             <Query query={categoryQuery} variables={{ id }}>
                 {({ loading, error, data }) => {
                     if (error) return <div>Data Fetch Error</div>;
-                    if (loading) return <Loader text={'Getting Products...'} />;
+                    if (loading) return <LoaderAction 
+                                            text={'Fetching Products...'} 
+                                            loading={true} 
+                                        />;
 
-                    return (
+                    return (                        
                         <article className={classes.root}>
+                            <LoaderAction loading={false} />
                             <h1 className={classes.title}>
                                 {/* TODO: Switch to RichContent component from Peregrine when merged */}
                                 <span

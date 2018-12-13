@@ -5,7 +5,7 @@ import classify from 'src/classify';
 import defaultClasses from './categoryList.css';
 import CategoryTile from './categoryTile';
 import categoryListQuery from '../../queries/getCategoryList.graphql';
-import Loader from 'src/components/Loader';
+import LoaderAction from 'src/components/LoaderAction';
 
 class CategoryList extends Component {
     static propTypes = {
@@ -40,12 +40,13 @@ class CategoryList extends Component {
                     {({ loading, error, data }) => {
                         if (error) return <div>Data Fetch Error</div>;
                         if (loading)
-                            return <Loader text={'Fetching Data...'} />;
+                            return <LoaderAction loading={true} text={'Fetching Data...'} />;
                         if (data.category.children == '')
                             return <div>Here are not any child categories</div>;
 
                         return (
                             <div className={classes.content}>
+                                <LoaderAction loading={false} />
                                 {data.category.children.map(item => (
                                     <CategoryTile
                                         item={item}
