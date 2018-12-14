@@ -130,7 +130,7 @@ test('renders RootComponent if `fetchRootComponent` succeeds', async () => {
     await Promise.resolve(); // resolveUnknownRoute
     await Promise.resolve(); // fetchRootComponent
 
-    expect(children).toHaveBeenCalledTimes(1);
+    expect(children).toHaveBeenCalledTimes(2);
     expect(children).toHaveBeenNthCalledWith(1, {
         hasError: false,
         internalError: false,
@@ -163,7 +163,7 @@ test('skips `fetchRootComponent` if path is known', async () => {
     await Promise.resolve(); // resolveUnknownRoute
     await Promise.resolve(); // fetchRootComponent
 
-    expect(children).toHaveBeenCalledTimes(2);
-    expect(fetchRootComponent).toHaveBeenCalledTimes(2);
+    expect(children).toHaveBeenCalledTimes(5);
+    expect(fetchRootComponent).toHaveBeenCalledTimes(3);
     expect(wrapper.find(RootComponent)).toHaveLength(1);
 });

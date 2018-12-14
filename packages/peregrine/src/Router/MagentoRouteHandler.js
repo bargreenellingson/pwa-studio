@@ -73,7 +73,8 @@ export default class MagentoRouteHandler extends Component {
                 renderRoot: null
             });
         }
-        this.setChildren(setChildren);
+        console.log("set in loading");
+        this.setChildren(setChildren);        
     }
 
     displayPage(prevIsKnown, pathname, prevPathname, prevErrorState) {
@@ -96,10 +97,12 @@ export default class MagentoRouteHandler extends Component {
                 setChildren = null;
             }
         }
-        
-        this.setState({
-          renderRoot: renderRoot
-        });
+        if (renderRoot !== this.state.renderRoot) { 
+            this.setState({
+                renderRoot: renderRoot
+            });
+        }
+        console.log("set in display");
         this.setChildren(setChildren);
     }
 
@@ -167,7 +170,6 @@ export default class MagentoRouteHandler extends Component {
         const { props, state } = this;
         const { children, loadMessage } = props;
         const { errorState } = state;
-
         this.setState ({
             renderChildren: loading === null
                 ? null
