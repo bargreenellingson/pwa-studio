@@ -14,6 +14,14 @@ const actionMap = {
     SET_PREV_PAGE_TOTAL: {
         REQUEST: null,
         RECEIVE: null
+    },
+    SET_SORT: {
+        REQUEST: null,
+        RECEIVE: null
+    },
+    SET_SORT_ORDER: {
+        REQUEST: null,
+        RECEIVE: null
     }
 };
 

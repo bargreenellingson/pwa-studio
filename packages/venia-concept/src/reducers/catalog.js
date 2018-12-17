@@ -9,6 +9,8 @@ const initialState = {
     rootCategoryId: null,
     currentPage: 1,
     pageSize: 6,
+    sort: "name",
+    sortOrder: "ASC",
     prevPageTotal: null
 };
 
@@ -42,6 +44,26 @@ const reducerMap = {
         return {
             ...state,
             prevPageTotal: payload
+        };
+    },
+    [actions.setSort.receive]: (state, { payload, error }) => {
+        if (error) {
+            return state;
+        }
+
+        return {
+            ...state,
+            sort: payload
+        };
+    },
+    [actions.setSortOrder.receive]: (state, { payload, error }) => {
+        if (error) {
+            return state;
+        }
+
+        return {
+            ...state,
+            sortOrder: payload
         };
     }
 };

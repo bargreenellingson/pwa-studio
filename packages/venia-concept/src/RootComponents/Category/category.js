@@ -5,7 +5,7 @@ import gql from 'graphql-tag';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classify from 'src/classify';
-import { setCurrentPage, setPrevPageTotal } from 'src/actions/catalog';
+import { setCurrentPage, setPrevPageTotal, setSort, setSortOrder } from 'src/actions/catalog';
 import CategoryContent from './categoryContent';
 import defaultClasses from './category.css';
 
@@ -16,7 +16,7 @@ const categoryQuery = gql`
             description
             name
             product_count
-            products(pageSize: $pageSize, currentPage: $currentPage) {
+            products(pageSize: $pageSize, currentPage: $currentPage, sort: {name:DESC}) {
                 items {
                     id
                     name
@@ -47,25 +47,37 @@ class Category extends Component {
         }),
         currentPage: number,
         pageSize: number,
-        prevPageTotal: number
+        prevPageTotal: number,
+        sort: string,
+        sortOrder: string
     };
 
     // TODO: Should not be a default here, we just don't have
     // the wiring in place to map route info down the tree (yet)
     static defaultProps = {
-        id: 3
+        id: 3,
     };
+
+    selectSort = (sort, sortOrder) => {
+        const { setSort, setSortOrder } = this.props;
+        setSort(sort);
+        setSortOrder(sortOrder);
+    }
 
     render() {
         const {
-            id,
             classes,
             currentPage,
+            id,
             pageSize,
             prevPageTotal,
             setCurrentPage,
-            setPrevPageTotal
+            setPrevPageTotal,
+            sort,
+            sortOrder,
         } = this.props;
+
+        const { selectSort } = this;
 
         const pageControl = {
             currentPage: currentPage,
@@ -80,7 +92,9 @@ class Category extends Component {
                 variables={{
                     id: Number(id),
                     pageSize: Number(pageSize),
-                    currentPage: Number(currentPage)
+                    currentPage: Number(currentPage),
+                    sort: String(sort),
+                    sortOrder: String(sortOrder)
                 }}
             >
                 {({ loading, error, data }) => {
@@ -111,6 +125,7 @@ class Category extends Component {
                             classes={classes}
                             pageControl={totalWrapper}
                             data={data}
+                            selectSort={selectSort}
                         />
                     );
                 }}
@@ -123,10 +138,12 @@ const mapStateToProps = ({ catalog }) => {
     return {
         currentPage: catalog.currentPage,
         pageSize: catalog.pageSize,
-        prevPageTotal: catalog.prevPageTotal
+        prevPageTotal: catalog.prevPageTotal,
+        sort: catalog.sort,
+        sortOrder: catalog.sortOrder
     };
 };
-const mapDispatchToProps = { setCurrentPage, setPrevPageTotal };
+const mapDispatchToProps = { setCurrentPage, setPrevPageTotal, setSortOrder, setSort };
 
 export default compose(
     classify(defaultClasses),

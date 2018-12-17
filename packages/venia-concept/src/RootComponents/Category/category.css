@@ -2,6 +2,20 @@
     padding: 1rem;
 }
 
+.sortOptions {
+    animation-duration: 224ms;
+    animation-iteration-count: 1;
+    animation-name: enter;
+    background-color: white;
+    bottom: 0;
+    box-shadow: 0 -1px rgb(var(--venia-border));
+    display: grid;
+    left: 0;
+    position: fixed;
+    z-index: 2;
+    right: 0;
+}
+
 .title {
     font-size: 1.5rem;
     font-weight: 400;

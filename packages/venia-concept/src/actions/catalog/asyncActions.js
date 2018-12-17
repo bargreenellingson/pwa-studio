@@ -21,6 +21,18 @@ export const setCurrentPage = payload =>
         window.scrollTo(0, 0);
     };
 
+export const setSort = payload =>
+    async function thunk(dispatch) {
+        dispatch(actions.setSort.receive(payload));
+        window.scrollTo(0, 0);
+    };
+
+export const setSortOrder = payload =>
+    async function thunk(dispatch) {
+        dispatch(actions.setSortOrder.receive(payload));
+        window.scrollTo(0, 0);
+    };
+
 export const setPrevPageTotal = payload =>
     async function thunk(dispatch) {
         dispatch(actions.setPrevPageTotal.receive(payload));

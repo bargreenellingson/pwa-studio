@@ -4,7 +4,7 @@ import { array, bool, func, object, shape, string } from 'prop-types';
 import { Price, Util } from '@magento/peregrine';
 import AddressForm from './addressForm';
 import PaymentsForm from './paymentsForm';
-import Section from './section';
+import Section from 'src/components/Section';
 import ShippingForm from './shippingForm';
 import SubmitButton from './submitButton';
 
