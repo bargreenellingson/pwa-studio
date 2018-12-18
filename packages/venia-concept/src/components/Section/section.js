@@ -26,17 +26,19 @@ class Section extends Component {
             selectedOption,
             ...restProps
         } = this.props;
+
         return (
             <Button classes={classes} {...restProps}>
+                {label ?
                 <span className={classes.label}>
                     <span>{label}</span>
-                </span>
+                </span> : null
+                }
                 <span className={classes.summary}>
                     {children}
-                    <span className={classes.icon}>
-                        {' '}
-                        {selectedOption && <Icon name="check" />}{' '}
-                    </span>
+                </span>
+                <span className={classes.icon}>
+                    {selectedOption && <Icon name="check" />}
                 </span>
             </Button>
         );

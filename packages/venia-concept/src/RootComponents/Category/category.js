@@ -58,7 +58,7 @@ class Category extends Component {
         id: 3,
     };
 
-    selectSort = (sort, sortOrder) => {
+    applySort = (sort, sortOrder) => {
         const { setSort, setSortOrder } = this.props;
         setSort(sort);
         setSortOrder(sortOrder);
@@ -77,7 +77,7 @@ class Category extends Component {
             sortOrder,
         } = this.props;
 
-        const { selectSort } = this;
+        const { applySort } = this;
 
         const pageControl = {
             currentPage: currentPage,
@@ -125,7 +125,9 @@ class Category extends Component {
                             classes={classes}
                             pageControl={totalWrapper}
                             data={data}
-                            selectSort={selectSort}
+                            applySort={applySort}
+                            sort={sort}
+                            sortOrder={sortOrder}
                         />
                     );
                 }}

@@ -3,17 +3,54 @@
 }
 
 .sortOptions {
-    animation-duration: 224ms;
-    animation-iteration-count: 1;
-    animation-name: enter;
+    height: 20rem;
+    transform: translateY(100%);
+    transition: .2s transform;
     background-color: white;
     bottom: 0;
     box-shadow: 0 -1px rgb(var(--venia-border));
-    display: grid;
     left: 0;
     position: fixed;
     z-index: 2;
     right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sortOptions > button {
+    min-width: 7em;
+    margin: 1rem 0;
+}
+
+.sortOptions h2 {
+    font-size: 1.05rem;
+    padding: 0 1.5rem;
+    font-weight: 800;
+    margin-top: 1em;
+    width: 100%;
+}
+
+.sortOptions h2 span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sortOptions h2::after {
+    content: "";
+    box-shadow: 0 2px rgb(var(--venia-border));
+    height: .2rem;
+    margin-top: 1em;
+    width: 100%;
+    display: block;
+}
+
+.sections {
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
 }
 
 .title {
@@ -31,4 +68,8 @@
 
 .placeholder {
     height: 100vh;
+}
+
+.hidden {
+    transform: translateY(0);
 }

@@ -4,13 +4,15 @@ import actions from 'src/actions/catalog';
 
 export const name = 'catalog';
 
+const params = new URLSearchParams(location.search);
+
 const initialState = {
     categories: null,
     rootCategoryId: null,
     currentPage: 1,
     pageSize: 6,
-    sort: "name",
-    sortOrder: "ASC",
+    sort: params.get('sort') || "name",
+    sortOrder: params.get('sortOrder') || "ASC",
     prevPageTotal: null
 };
 
