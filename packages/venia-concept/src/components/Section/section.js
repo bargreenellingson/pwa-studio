@@ -29,14 +29,12 @@ class Section extends Component {
 
         return (
             <Button classes={classes} {...restProps}>
-                {label ?
-                <span className={classes.label}>
-                    <span>{label}</span>
-                </span> : null
-                }
-                <span className={classes.summary}>
-                    {children}
-                </span>
+                {label ? (
+                    <span className={classes.label}>
+                        <span>{label}</span>
+                    </span>
+                ) : null}
+                <span className={classes.summary}>{children}</span>
                 <span className={classes.icon}>
                     {selectedOption && <Icon name="check" />}
                 </span>

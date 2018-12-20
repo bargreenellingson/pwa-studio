@@ -11,7 +11,7 @@
     border-bottom: 1px solid rgb(var(--venia-border));
     display: flex;
     margin: 0 1.5rem;
-    min-height: 4.5rem;
+    min-height: 2.5rem;
     padding: 1rem 0;
     text-align: left;
     position: relative;
@@ -36,6 +36,7 @@
 .icon {
     position: absolute;
     right: 0;
+    align-self: baseline;
 }
 
 .icon * {

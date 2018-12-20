@@ -5,7 +5,12 @@ import gql from 'graphql-tag';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import classify from 'src/classify';
-import { setCurrentPage, setPrevPageTotal, setSort, setSortOrder } from 'src/actions/catalog';
+import {
+    setCurrentPage,
+    setPrevPageTotal,
+    setSort,
+    setSortOrder
+} from 'src/actions/catalog';
 import CategoryContent from './categoryContent';
 import defaultClasses from './category.css';
 
@@ -16,7 +21,11 @@ const categoryQuery = gql`
             description
             name
             product_count
-            products(pageSize: $pageSize, currentPage: $currentPage, sort: {name:DESC}) {
+            products(
+                pageSize: $pageSize
+                currentPage: $currentPage
+                sort: { name: DESC }
+            ) {
                 items {
                     id
                     name
@@ -55,14 +64,14 @@ class Category extends Component {
     // TODO: Should not be a default here, we just don't have
     // the wiring in place to map route info down the tree (yet)
     static defaultProps = {
-        id: 3,
+        id: 3
     };
 
     applySort = (sort, sortOrder) => {
         const { setSort, setSortOrder } = this.props;
         setSort(sort);
         setSortOrder(sortOrder);
-    }
+    };
 
     render() {
         const {
@@ -74,7 +83,7 @@ class Category extends Component {
             setCurrentPage,
             setPrevPageTotal,
             sort,
-            sortOrder,
+            sortOrder
         } = this.props;
 
         const { applySort } = this;
@@ -145,7 +154,12 @@ const mapStateToProps = ({ catalog }) => {
         sortOrder: catalog.sortOrder
     };
 };
-const mapDispatchToProps = { setCurrentPage, setPrevPageTotal, setSortOrder, setSort };
+const mapDispatchToProps = {
+    setCurrentPage,
+    setPrevPageTotal,
+    setSortOrder,
+    setSort
+};
 
 export default compose(
     classify(defaultClasses),

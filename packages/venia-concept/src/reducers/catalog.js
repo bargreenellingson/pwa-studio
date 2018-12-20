@@ -11,8 +11,8 @@ const initialState = {
     rootCategoryId: null,
     currentPage: 1,
     pageSize: 6,
-    sort: params.get('sort') || "name",
-    sortOrder: params.get('sortOrder') || "ASC",
+    sort: params.get('sort') || 'name',
+    sortOrder: params.get('sortOrder') || 'ASC',
     prevPageTotal: null
 };
 

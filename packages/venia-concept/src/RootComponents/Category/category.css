@@ -3,9 +3,9 @@
 }
 
 .sortOptions {
-    height: 20rem;
+    height: 30rem;
     transform: translateY(100%);
-    transition: .2s transform;
+    transition: 0.2s transform;
     background-color: white;
     bottom: 0;
     box-shadow: 0 -1px rgb(var(--venia-border));
@@ -39,9 +39,9 @@
 }
 
 .sortOptions h2::after {
-    content: "";
+    content: '';
     box-shadow: 0 2px rgb(var(--venia-border));
-    height: .2rem;
+    height: 0.2rem;
     margin-top: 1em;
     width: 100%;
     display: block;
