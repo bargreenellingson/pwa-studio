@@ -8,20 +8,20 @@ class CategoryContent extends Component {
     render() {
         const { classes, pageControl, data, pageSize } = this.props;
         const items = data ? data.category.products.items : null;
-        const title = data ? data.category.description : null;
+        const description = data ? data.category.description : null;
+        const name = data ? data.category.name : null;
+        const productCount = data ? data.category.product_count : null;
 
         return (
             <article className={classes.root}>
-                <h1 className={classes.title}>
-                    {/* TODO: Switch to RichContent component from Peregrine when merged */}
-                    <span
-                        dangerouslySetInnerHTML={{
-                            __html: title
-                        }}
-                    />
-                </h1>
                 <section className={classes.gallery}>
-                    <Gallery data={items} title={title} pageSize={pageSize} />
+                    <Gallery
+                        data={items}
+                        name={name}
+                        productCount={productCount}
+                        description={description}
+                        pageSize={pageSize}
+                    />
                 </section>
                 <div className={classes.pagination}>
                     <Pagination pageControl={pageControl} />
