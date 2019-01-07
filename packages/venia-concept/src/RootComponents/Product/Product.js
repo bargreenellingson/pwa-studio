@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import { bool, shape, number, arrayOf, string } from 'prop-types';
 
 import { addItemToCart } from 'src/actions/cart';
+import { loadingIndicator } from 'src/components/LoadingIndicator';
 import ProductFullDetail from 'src/components/ProductFullDetail';
 import getUrlKey from 'src/util/getUrlKey';
 import getProductDetail from 'src/queries/getProductDetail.graphql';
@@ -66,7 +67,7 @@ class Product extends Component {
             >
                 {({ loading, error, data }) => {
                     if (error) return <div>Data Fetch Error</div>;
-                    if (loading) return <div>Fetching Data</div>;
+                    if (loading) return loadingIndicator;
 
                     const product = data.productDetail.items[0];
 
